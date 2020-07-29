@@ -14,8 +14,8 @@ if __name__ == '__main__':
         exit(1)
 
     my_file = sys.argv[1]
-    name, exten = os.path.splitext(sys.argv[1])
-    if (os.path.exists(sys.argv[1]) and exten == ".md"):
+    name, exten = os.path.splitext(my_file)
+    if (os.path.exists(my_file) and exten == ".md"):
         exit(0)
     else:
         print("Missing {}".format(my_file), file=sys.stderr)
