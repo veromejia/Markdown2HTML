@@ -18,5 +18,5 @@ if __name__ == '__main__':
     if (os.path.exists(sys.argv[1]) and exten == ".md"):
         exit(0)
     else:
-        print("Missing:{}".format(my_file), file=sys.stderr)
+        print("Missing {}".format(my_file), file=sys.stderr)
         exit(1)
