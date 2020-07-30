@@ -21,13 +21,14 @@ if __name__ == '__main__':
         print("Missing {}".format(my_mdfile), file=sys.stderr)
         exit(1)
 
-    """with open(my_mdfile, 'r') as mdfile:
+    with open(my_mdfile, 'r') as mdfile:
         with open(sys.argv[2], 'w') as htmlfile:
             for line in mdfile:
                 headings = line.split(" ", 1)[0]
-                new_line = (line.split(" ", 1)[1]).rstrip('\n')
-                for key, val in my_dict.items():
-                    if headings == key:
-                        htmlfile.write(
-                            "<{}>{}</{}>\n".format(val, new_line, val))"""
+                if headings in my_dict.keys():
+                    new_line = (line.split(" ", 1)[1]).rstrip('\n')
+                    for key, val in my_dict.items():
+                        if headings == key:
+                            htmlfile.write(
+                                "<{}>{}</{}>\n".format(val, new_line, val))
     exit(0)
