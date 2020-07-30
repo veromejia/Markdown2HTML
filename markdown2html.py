@@ -30,4 +30,4 @@ if __name__ == '__main__':
             for key, val in my_dict.items():
                 if headings == key:
                     htmlfile.write("<{}>{}</{}>\n".format(val, new_line, val))
-    exit(0)
+        exit(0)
