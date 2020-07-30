@@ -13,10 +13,24 @@ if __name__ == '__main__':
               file=sys.stderr)
         exit(1)
 
-    my_file = sys.argv[1]
-    name, exten = os.path.splitext(my_file)
-    if (os.path.exists(my_file) and exten == ".md"):
-        exit(0)
-    else:
-        print("Missing {}".format(my_file), file=sys.stderr)
+    my_mdfile = sys.argv[1]
+    my_htmlfile = sys.argv[2]
+    my_dict = {"#": "h1", "##": "h2", "###": "h3",
+               "####": "h4", "#####": "h5", "######": "h6"}
+
+    name, exten = os.path.splitext(my_mdfile)
+    if (not os.path.exists(my_mdfile) or not exten == ".md"):
+        print("Missing {}".format(my_mdfile), file=sys.stderr)
         exit(1)
+
+    """ open the file"""
+    with open(my_mdfile, 'r') as mdfile, open(my_htmlfile, 'w') as htmlfile:
+        for line in mdfile:
+            headings = line.split(" ", 1)[0]
+            new_line = (line.split(" ", 1)[1]).rstrip('\n')
+            count = len(headings)
+            """for key, val in my_dict.items():"""
+            for key, val in my_dict.items():
+                if headings == key:
+                    htmlfile.write("<{}>{}</{}>\n".format(val, new_line, val))
+    exit(0)
