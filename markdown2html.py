@@ -9,7 +9,9 @@ import os.path
 
 if __name__ == '__main__':
     my_dict = {"#": "h1", "##": "h2", "###": "h3",
-               "####": "h4", "#####": "h5", "######": "h6"}
+               "####": "h4", "#####": "h5", "######": "h6", "-": "ul"}
+    isOpeningUlTag = False
+
     if (len(sys.argv) <= 2):
         print('Usage: ./markdown2html.py README.md README.html',
               file=sys.stderr)
@@ -29,6 +31,24 @@ if __name__ == '__main__':
                     new_line = (line.split(" ", 1)[1]).rstrip('\n')
                     for key, val in my_dict.items():
                         if headings == key:
-                            htmlfile.write(
-                                "<{}>{}</{}>\n".format(val, new_line, val))
+                            if "#" in headings:
+                                if isOpeningUlTag:
+                                    isOpeningUlTag = False
+                                    htmlfile.write("</ul>\n")
+
+                                htmlfile.write(
+                                    "<{}>{}</{}>\n".format(val, new_line, val))
+                            elif "-" in headings:
+                                if isOpeningUlTag is False:
+                                    isOpeningUlTag = True
+                                    htmlfile.write("<{}>\n".format(val))
+                                htmlfile.write(
+                                        "\t<li>{}</li>\n".format(new_line))
+                            else:
+                                if isOpeningUlTag:
+                                    isOpeningUlTag = False
+                                htmlfile.write("</ul>\n")
+            if isOpeningUlTag:
+                isOpeningUlTag = False
+                htmlfile.write("</ul>\n")
     exit(0)
