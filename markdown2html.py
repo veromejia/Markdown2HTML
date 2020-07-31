@@ -8,9 +8,10 @@ import sys
 import os.path
 
 if __name__ == '__main__':
-    my_dict = {"#": "h1", "##": "h2", "###": "h3",
-               "####": "h4", "#####": "h5", "######": "h6", "-": "ul"}
+    my_dict = {"#": "h1", "##": "h2", "###": "h3", "####": "h4",
+               "#####": "h5", "######": "h6", "-": "ul", "*": "ol"}
     isOpeningUlTag = False
+    isOpeningOlTag = False
 
     if (len(sys.argv) <= 2):
         print('Usage: ./markdown2html.py README.md README.html',
@@ -35,20 +36,45 @@ if __name__ == '__main__':
                                 if isOpeningUlTag:
                                     isOpeningUlTag = False
                                     htmlfile.write("</ul>\n")
+                                if isOpeningOlTag:
+                                    isOpeningOlTag = False
+                                    htmlfile.write("</ol>\n")
 
                                 htmlfile.write(
                                     "<{}>{}</{}>\n".format(val, new_line, val))
                             elif "-" in headings:
+                                if isOpeningOlTag:
+                                    isOpeningOlTag = False
+                                    htmlfile.write("</ol>\n")
+
                                 if isOpeningUlTag is False:
                                     isOpeningUlTag = True
                                     htmlfile.write("<{}>\n".format(val))
                                 htmlfile.write(
-                                        "\t<li>{}</li>\n".format(new_line))
+                                    "\t<li>{}</li>\n".format(new_line))
+                            elif "*" in headings:
+                                if isOpeningUlTag:
+                                    isOpeningUlTag = False
+                                    htmlfile.write("</ul>\n")
+
+                                if isOpeningOlTag is False:
+                                    isOpeningOlTag = True
+                                    htmlfile.write("<{}>\n".format(val))
+                                htmlfile.write(
+                                    "\t<li>{}</li>\n".format(new_line))
+
                             else:
                                 if isOpeningUlTag:
                                     isOpeningUlTag = False
-                                htmlfile.write("</ul>\n")
+                                    htmlfile.write("</ul>\n")
+                                if isOpeningOlTag:
+                                    isOpeningOlTag = False
+                                    htmlfile.write("</ol>\n")
+
             if isOpeningUlTag:
                 isOpeningUlTag = False
                 htmlfile.write("</ul>\n")
+            if isOpeningOlTag:
+                isOpeningOlTag = False
+                htmlfile.write("</ol>\n")
     exit(0)
